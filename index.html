@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>2AM Orbit | Driving Test</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.92)),
+        url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80");
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      min-height: 720px;
+      background: rgba(7, 7, 8, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 34px;
+      padding: 26px 22px;
+      box-shadow: 0 0 60px rgba(190, 20, 30, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      color: #d71920;
+    }
+
+    .badge {
+      font-size: 11px;
+      color: #cccccc;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 7px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .screen {
+      display: none;
+      animation: fade 0.3s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .label {
+      color: #d71920;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: 46px;
+      line-height: 0.95;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+    }
+
+    h2 {
+      font-size: 32px;
+      line-height: 1.05;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      letter-spacing: -0.5px;
+    }
+
+    .red {
+      color: #d71920;
+    }
+
+    p {
+      color: #d7d7d7;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #9b9b9b;
+      line-height: 1.45;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .chat-box {
+      background: #111113;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 16px;
+      margin: 24px 0;
+    }
+
+    .chat-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #dcdcdc;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .bubble {
+      max-width: 78%;
+      padding: 12px 14px;
+      border-radius: 17px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .incoming {
+      background: #292929;
+      color: white;
+      border-bottom-left-radius: 4px;
+    }
+
+    .outgoing {
+      background: #d71920;
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      padding: 15px 15px;
+      border-radius: 14px;
+      margin-top: 12px;
+      background: #d71920;
+      color: white;
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      letter-spacing: 0.4px;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: white;
+    }
+
+    .option-note {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.78;
+      text-transform: none;
+      margin-top: 4px;
+      letter-spacing: 0;
+    }
+
+    .result-card {
+      border: 1px solid rgba(215, 25, 32, 0.75);
+      background: rgba(215, 25, 32, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+      margin: 22px 0;
+    }
+
+    .result-card ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .result-card li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #eeeeee;
+      font-size: 15px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .actions div {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 13px 8px;
+      text-align: center;
+      font-size: 13px;
+      color: #eeeeee;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .footer {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 20px;
+      color: #9b9b9b;
+      font-size: 11px;
+      line-height: 1.4;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="phone">
+    <div class="top-bar">
+      <div class="logo">2AM <span>Orbit</span></div>
+      <div class="badge">CSR</div>
+    </div>
+
+    <!-- START -->
+    <section class="screen active" id="screen1">
+      <div class="label">The 2AM Driving Test</div>
+
+      <h1>Fastest <span class="red">Driver?</span></h1>
+
+      <p>
+        Welcome to the 2AM Driving Test.
+        No license needed. Just choices.
+      </p>
+
+      <div class="chat-box">
+        <div class="chat-title">Dost</div>
+        <div class="bubble incoming">Pizza at 2AM?</div>
+        <div class="bubble outgoing">Haha okay</div>
+      </div>
+
+      <button class="btn" onclick="startTest()">Start Test</button>
+
+      <div class="small">
+        Let’s see where your choices take you.
+      </div>
+    </section>
+
+    <!-- QUESTION 1 -->
+    <section class="screen" id="screen2">
+      <div class="label">Question 1 / 3</div>
+
+      <h2>Your dost texts: <span class="red">“Pizza at 2AM?”</span></h2>
+
+      <p>You are driving. What do you do?</p>
+
+      <button class="btn" onclick="answerUnsafe(3)">
+        Reply: “Haha okay”
+        <span class="option-note">It’ll only take a second.</span>
+      </button>
+
+      <button class="btn secondary" onclick="answerSafe(4)">
+        Phone down. Drive first.
+        <span class="option-note">Pizza can wait.</span>
+      </button>
+    </section>
+
+    <!-- UNSAFE Q1 RESULT -->
+    <section class="screen" id="screen3">
+      <div class="label">Result</div>
+
+      <h1>Nice Reply.</h1>
+      <h1><span class="red">Shame You Missed The Road.</span></h1>
+
+      <p>The message was casual. The mistake wasn’t.</p>
+
+      <button class="btn" onclick="showScreen(5)">Next Question</button>
+    </section>
+
+    <!-- SAFE Q1 RESULT -->
+    <section class="screen" id="screen4">
+      <div class="label">Result</div>
+
+      <h1>Boring Choice.</h1>
+      <h1><span class="red">Smart Ending.</span></h1>
+
+      <p>You kept your eyes where they belonged.</p>
+
+      <button class="btn" onclick="showScreen(5)">Next Question</button>
+    </section>
+
+    <!-- QUESTION 2 -->
+    <section class="screen" id="screen5">
+      <div class="label">Question 2 / 3</div>
+
+      <h2>Empty road. No traffic. Full confidence.</h2>
+
+      <p>What now?</p>
+
+      <button class="btn" onclick="answerUnsafe(6)">
+        Speed up
+        <span class="option-note">Main character energy.</span>
+      </button>
+
+      <button class="btn secondary" onclick="answerSafe(7)">
+        Stay steady
+        <span class="option-note">Reach home, not headlines.</span>
+      </button>
+    </section>
+
+    <!-- UNSAFE Q2 RESULT -->
+    <section class="screen" id="screen6">
+      <div class="label">Result</div>
+
+      <h1>Fastest Driver.</h1>
+      <h1><span class="red">Worst Destination.</span></h1>
+
+      <p>You saved seconds. Lost control. Great trade.</p>
+
+      <button class="btn" onclick="showScreen(8)">Next Question</button>
+    </section>
+
+    <!-- SAFE Q2 RESULT -->
+    <section class="screen" id="screen7">
+      <div class="label">Result</div>
+
+      <h1>Slow? Maybe.</h1>
+      <h1><span class="red">Alive? Definitely.</span></h1>
+
+      <p>That is the real flex.</p>
+
+      <button class="btn" onclick="showScreen(8)">Next Question</button>
+    </section>
+
+    <!-- QUESTION 3 -->
+    <section class="screen" id="screen8">
+      <div class="label">Question 3 / 3</div>
+
+      <h2>Short ride. Helmet optional?</h2>
+
+      <p>What do you do?</p>
+
+      <button class="btn" onclick="answerUnsafe(9)">
+        No helmet
+        <span class="option-note">Bas paas hi jaana hai.</span>
+      </button>
+
+      <button class="btn secondary" onclick="answerSafe(10)">
+        Helmet on
+        <span class="option-note">Ego off.</span>
+      </button>
+    </section>
+
+    <!-- UNSAFE Q3 RESULT -->
+    <section class="screen" id="screen9">
+      <div class="label">Result</div>
+
+      <h1>Bas Paas Hi Jaana Tha.</h1>
+
+      <p>The hospital was closer than expected.</p>
+
+      <button class="btn" onclick="finalResult()">See Result</button>
+    </section>
+
+    <!-- SAFE Q3 RESULT -->
+    <section class="screen" id="screen10">
+      <div class="label">Result</div>
+
+      <h1>Helmet On.</h1>
+      <h1><span class="red">Brain Protected.</span></h1>
+
+      <p>Good choice. Rare behaviour.</p>
+
+      <button class="btn" onclick="finalResult()">See Result</button>
+    </section>
+
+    <!-- FAIL RESULT -->
+    <section class="screen" id="screen11">
+      <div class="label">Final Result</div>
+
+      <h1>Failed <span class="red">Successfully.</span></h1>
+
+      <p>
+        Fastest driver. Worst destination.
+        Your “quick ride” won you exactly this:
+      </p>
+
+      <div class="result-card">
+        <ul>
+          <li>Emergency visit</li>
+          <li>Broken phone</li>
+          <li>Zero pizza</li>
+          <li>One bad decision</li>
+        </ul>
+      </div>
+
+      <p><strong>Late-night cravings can wait. Lives can’t.</strong></p>
+
+      <button class="btn" onclick="resetTest()">Try Again</button>
+    </section>
+
+    <!-- PASS RESULT -->
+    <section class="screen" id="screen12">
+      <div class="label">Final Result</div>
+
+      <h1>Passed.</h1>
+      <h1><span class="red">Surprisingly.</span></h1>
+
+      <p>
+        You reached home. That’s the real flex.
+      </p>
+
+      <div class="actions">
+        <div>Slow Down</div>
+        <div>Phone Down</div>
+        <div>Helmet On</div>
+        <div>Reach Home</div>
+      </div>
+
+      <p style="margin-top: 22px;">
+        <strong>Late-night cravings can wait. Lives can’t.</strong>
+      </p>
+
+      <button class="btn" onclick="resetTest()">Take Test Again</button>
+    </section>
+
+    <div class="footer">
+      A road safety CSR initiative by 2AM Orbit
+    </div>
+  </main>
+
+  <script>
+    let unsafeChoices = 0;
+
+    function showScreen(number) {
+      document.querySelectorAll(".screen").forEach((screen) => {
+        screen.classList.remove("active");
+      });
+
+      document.getElementById("screen" + number).classList.add("active");
+    }
+
+    function startTest() {
+      unsafeChoices = 0;
+      showScreen(2);
+    }
+
+    function answerUnsafe(nextScreen) {
+      unsafeChoices++;
+      showScreen(nextScreen);
+    }
+
+    function answerSafe(nextScreen) {
+      showScreen(nextScreen);
+    }
+
+    function finalResult() {
+      if (unsafeChoices > 0) {
+        showScreen(11);
+      } else {
+        showScreen(12);
+      }
+    }
+
+    function resetTest() {
+      unsafeChoices = 0;
+      showScreen(1);
+    }
+  </script>
+</body>
+</html>
